@@ -13,10 +13,45 @@ Give a short overview about the IO of Arduino, what pins are and what kind of pi
 ## 1.1 First Task to be done
 
 ```
-Make an LED Blink and Fade. What is the difference between the two ways to realize it ? Describe it in few words and give an example. You can use the tutorial.
+Make an LED Blink and Fade. What is the difference between the two ways to realize it ?
 ```
 
-If you want the LED to fade you need a PWM Signal which can be send via the command `analogWrite(...)`. If you want that the LED should blink you need a digital Signal which can be send via the command `digitalWrite(...)`.
+If you want the LED to fade you need a PWM Signal which can be send via the function `analogWrite(pin, value)`. If you want that the LED should blink you need a digital Signal which can be send via the function `digitalWrite(pin, value)`.
+
+The example below shows how the function `digitalWrite()` does work for a LED which should be glow for one second:
+
+```arduino
+
+int led = 7;
+
+void setup() {
+    pinMode(led, OUTPUT);    // Set Mode for our Pin to "Output".
+    digitalWrite(led, HIGH); // Set the flank on our Pin to High (LED is on).
+    delay(1000);             // Wait for 1000ms (= 1s).
+    digitalWrite(led, LOW);  // Set the flank on our Pin to Low (LED is off).
+}
+
+```
+
+We can see that the function is kept very simple.
+The example below shows how we can set different values for an digital PWM Pin.
+
+```arduino
+
+int led = 9; // Digital PWM Pin
+
+void setup() {
+    int value = 42;
+    analogWrite(led, value); // Set Value on our Pin to 42.
+    value = 255;
+    analogWrite(led, value); // Set Value on our Pin to 255;
+    value = 0;
+    analogWrite(led, value); // Set Value on our Pin to 0;
+}
+
+```
+
+Now we can see the function `analogWrite()` can set more different values (from 0 to 255) as the function `digitalWrite()`.
 
 ## 1.2 Second Task to be done
 
@@ -24,8 +59,18 @@ If you want the LED to fade you need a PWM Signal which can be send via the comm
 Make a Buzzer Program. Describe it in few words and give an example how it works. What is needed to make it Buzz ?
 ```
 
-With the function `tone(pin, frequency, duration)` which we will pass the pin to which the buzzer is connected. We also pass a frequency and the duration of the note in milliseconds
+With the function `tone(pin, frequency, duration)` which we will pass the pin to which the buzzer is connected. We also pass a frequency and the duration of the note in milliseconds.
 
+For example:
+```arduino
+
+void setup() {
+    tone(8, random(100,2000), random(100, 2000));
+}
+
+```
+
+The example above sets a frequenz between 100 and 2000 Hz on Pin 8 with a Duration between 100ms and 2000ms.
 
 ## 1.3 Third Task to be done
 
@@ -52,21 +97,25 @@ Combine Task 1.1 to 1.4. Be creative
 Create a Program that uses LED, Buzzer, timer and serial communication. Describe what your idea is and how you realized them.
 ```
 
-The button will be used to create a circuit. If the button is pressed the circuit will be closed and the connected Pin will get a HIGH flank. We can read the value of the Pin in our Program which Value it has. As an example: If the button was pressed the Flank from the connected IO Pin will be HIGH (=1). So if the this Pin is 1 we can turn on a LED or something else. If the Pin returns 0 we can turn off the LED.
+TODO
 
 ## 2 LED Matrix
 
 ## 2.1 First Task to be done
 
 ```
-Given the Hardware (Arduino + LED Matrix 16x8 LED) do a counter and a small application. Read the documentation of the module and apply. Explain how it works and what is necessary. Also describe the parameters.
+Given the Hardware (Arduino + LED Matrix 16x8 LED) do a counter and a small application. Read the documentation of the module and apply.
 ```
+
+TODO
 
 ## 2.2 Second Task to be done
 
 ```
-Count with the LED from 0 to 128. As Tipp: use the function "matrix.drawPixel(X, Y, COLOR);". How does the function work ? What are parameters. How do you make the content fit ?
+Count with the LED from 0 to 128. As Tipp use the function “matrix.drawPixel(X, Y, COLOR)”. How does this function work?
 ```
+
+TODO
 
 The parameters *X* and *Y* are the coordinates of the pixel which should be set. Because we only have one color we pass LED_ON as the third parameter.
 
@@ -74,16 +123,20 @@ The parameters *X* and *Y* are the coordinates of the pixel which should be set.
 ## 2.3 Third Task to be done
 
 ```
-Draw easy Bitmap on the LED Matrix. As Tipp: use the function "matrix.drawBitmap(0, 8, om_bmp, 8, 8, HT16K33_BLINK_CMD);". How does this function work ? What else is necessary ?
+Draw easy Bitmap on the LED Matrix. As Tipp use the function “matrix.drawBitmap(0, 8, om_bmp, 8, 8, HT16K33_BLINK_CMD);”.
+How does this function work? What else is nessesary?
 ```
 
-It takes a bitmap *matrix* (progmem uint8 array) and "puts" it onto the matrix.
+The function `matrix.drawBitmap(x, y, bitmap[], width, height, color)` can render an array onto the board. We can say on which position we want to start, which height and width our Bitmap have and which color we want. In Addition to see something we can put an array as a parameter to this function which will be rendered to our board. To see something on the board we need to call the function `matrix.writeDisplay()` after that.
 
 ## 2.4 Fourth Task to be done
 
 ```
-Print some Text in the LED Matrix. As Tipp: use the functions "matrix.print("Hello");" and "matrix.setCursor(x, 0);". How does this work ? What options are available ? How does the example behave with more longer text ? What happens with the memory ? 
+Print some Text in the LED Matrix. As Tipp use “matrix.print("Hello");” and “matrix.setCursor(x,0);”.
+How does this work?
 ```
+
+With the function `matrix.setCursor(x, 0)` we can set the pixel position where to render the text. For example `matrix.setCursor(0, 0)` sets the pixel position on top left and `matrix.setCursor(15, 0)` set it on top right on our board. With the function `matrix.print("Hello")` we can render the given String (e.g. "Hello") to our board.
 
 ## 2.5 Fifth Task to be done
 
@@ -91,11 +144,16 @@ Print some Text in the LED Matrix. As Tipp: use the functions "matrix.print("Hel
 Document and explain all functions and how does the Board work.
 ```
 
+TODO (?)
+
 ## 3 LED Matrix as Terminal Output
 
 ```
-Combine the knowledge of the two previous Tasks and write a LED-Banner that plots the data that is send the Arduino via Terminal. Describe how your program works and what your concept is. Do some sort of planning before you start programming.
+Combine the knowledge of the two previous Tasks and write a LED-Banner that plots the data that is send the Arduino via Terminal. 
+Describe how your program works.
 ```
+
+TODO
 
 We use `Serial.read()` to read from the Arduino terminal. The returned string is then printed onto the matrix.
 
@@ -119,14 +177,20 @@ You need the following:
 The digital thermometer uses a one-wire protocol for communication. Fortunately the Arduino IDE already provides an implementation for the protocol (one-wire library). For this exercise we will use the already existing library. 
 ```
 
+TODO
+
 ## 4.2 Temperature reading
 
 ```
-Using the Arduino implement a algorithm to get the data from the sensor and plot it onto the serial console
+Using the Arduino implement get the data from sensor and plotted at the Serial console.
 ```
+
+TODO
 
 ## 4.3 LED scale
 
 ```
-Extend the circuit with a LED Matrix and display the temperature
+Expand the circuit with 2 LED Matix and Print the Temperature.
 ```
+
+TODO 
