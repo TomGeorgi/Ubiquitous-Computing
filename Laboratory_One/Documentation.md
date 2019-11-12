@@ -48,7 +48,6 @@ void setup() {
     value = 0;
     analogWrite(led, value); // Set Value on our Pin to 0;
 }
-
 ```
 
 Now we can see the function `analogWrite()` can set more different values (from 0 to 255) as the function `digitalWrite()`.
@@ -59,6 +58,7 @@ Now we can see the function `analogWrite()` can set more different values (from 
 Make a Buzzer Program. Describe it in few words and give an example how it works. What is needed to make it Buzz ?
 ```
 
+
 With the function `tone(pin, frequency, duration)` which we will pass the pin to which the buzzer is connected. We also pass a frequency and the duration of the note in milliseconds.
 
 For example:
@@ -67,10 +67,9 @@ For example:
 void setup() {
     tone(8, random(100,2000), random(100, 2000));
 }
-
 ```
 
-The example above sets a frequenz between 100 and 2000 Hz on Pin 8 with a Duration between 100ms and 2000ms.
+The example above sets a frequency between 100 Hz and 2000 Hz on Pin 8 with a Duration between 100ms and 2000ms. The tone is only played once because it is in the
 
 ## 1.3 Third Task to be done
 
