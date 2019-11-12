@@ -220,7 +220,7 @@ You need the following:
 
 2. Evaluation:
 
-    In Addition to 4.1 ...
+    In Addition to 4.1 we need to convert the read data from the Temperature chip into a readable value for us. In our example from hex to String. The first thing we need to check is if the returned temperature is negative. If it is true we need to calculate a two's complement of the signed value. After them we need to mulitply by 6.25 or (100 * 0.0625), because our sensor has 0.0625 degree precision. After we got the result we seperate off the whole and the fractional portions. We do this because, when the value is shorter then 10 we need to print an extra 0 for the right value. Further more at the beginning of our convertion we saved us the sign bit. With this information we can check if it is negativ or positiv and can print a *-* at the beginning of our value or not.
 
 ## 4.3 LED scale
 
@@ -230,4 +230,4 @@ You need the following:
 
 2. Evaluation:
 
-    In Addition to 4.1 and 4.2 ...
+    The last attempt with the temperature sensor follows the tasks 4.1 and 4.2. After converted the read hex temperature value into a String we can print them also onto our LED Matrix board. So we need to setup our board. We wrote a `for`-loop for our `matrix.setCursor(x, 0)` function. We use the `for`-loop to make our text glide across the board, because in case our text is to big we cut the end of the value. In this `for`-loop we setup the board. The function `matrix.setTextSize(1)` will set the font size to the minimal value. Then we forbid the text to run off right edge with the function `matrix.setTextWrap(false)`. Then we rotate the text with `matrix.setRotation(1)`, cleared the board with `matrix.clear()` and set the start pixel to 0,0 with the function `matrix.setCursor(0, 0)`. After them we can start to write the value on the board with the function `matrix.print(value)`. The printing on the board is the same principle like the printing on the Serial output. We check the sign bit and print a *-* if the value is minus and then we print the *whole* value. The next we do is to check if the *fractional* value is shorter than 10 and if it is true we print an extra 0 and the we print the *frational* value. So after this we got the temperature on our LED Matrix board.
