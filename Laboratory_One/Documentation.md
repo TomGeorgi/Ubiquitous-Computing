@@ -14,7 +14,10 @@ Give a short overview about the IO of Arduino, what pins are and what kind of pi
 
 1. Task Definition
 
-    Make an LED Blink and Fade. What is the difference between the two ways to realize it ?
+    Make an LED Blink and Fade. What is the different between the two ways to realize it? Describe it
+    in few words and give an example. You can use the tutorial as base. Don’t forget to explain the
+    difference concepts and ideas behind Blink and Fade. Give also a short use case for each of this
+    concepts.
 
 2. Evaluation
    
@@ -59,7 +62,9 @@ Give a short overview about the IO of Arduino, what pins are and what kind of pi
 
 1. Task Definition
 
-    Make a Buzzer Program. Describe it in few words and give an example how it works. What is needed to make it Buzz ?
+    Make a Buzzer Program. Describe it in few words and give an example how it works. What is
+    needed to make it Buzz. Implement your own melody and describe how to create a melody or how
+    to implement a song. Give also a short use case for each of this concepts.
 
 2. Evaluation
 
@@ -80,7 +85,7 @@ Give a short overview about the IO of Arduino, what pins are and what kind of pi
 
 1. Task Definition:
     
-    Expand the Blink Task with a button or a timer and a Buzzer. Create a Program that uses the knowledge of the last exercises. Describe in few words how it works.
+    Expand the Blink Task with a button or a timer and a Buzzer. Create a Program that uses the knowledge of the last exercises. Describe it in few words how the program works. Describe the idea behind the program.
 
 2. Evaluation:
 
@@ -90,24 +95,27 @@ Give a short overview about the IO of Arduino, what pins are and what kind of pi
 
 1. Task Definition: 
    
-    Communication between different modules: Understand the Serial communication. 
-    Read and understand what Serial communication is. What other kind of communication possibilities options are there and what are their advantages and disadvantages. Describe at least two additional communication methods and Serial.
+    Read and understand what Serial communication is. What other kind of communication exist for Arduino? What are their advantages and disadvantages? Describe at least two additional communication possibilities additionally to Serial communication.
 
 2. Evaluation:
     
-    There are also I²C and SPI. Comparing to Serial I²C is synchronous (it has a clock pin). The disadvantage of I²C is its limited speed. SPI on the other hand needs more cables but you can also chain multiple SPI capable devices in series.
+    There are also I²C and SPI. Comparing to Serial I²C is synchronous (it has a clock pin) and so you do not have to agree on a baudrate. The disadvantage of I²C is its limited speed which ranges from 0,1 Mbit/s to 3,4 Mbit/s. The ultra fast mode reaches 5,0 Mbit/s but then it is only unidirectional. Another disadvantage is that I²C is like Serial only half-duplex.
+    SPI on the other hand needs more cables but is full-duplex and you can also chain multiple SPI capable devices together.
+     You need:
+    - SCLK (Serial Clock) Master this emits for synchronisation
+    - MOSI (Master Output, Slave Input)
+    - MISO (Master Input, Slave Output)
 
 
 ## 1.5 Fifth Task to be done
 
 1. Task Definition:
 
-    Combine Task 1.1 to 1.4. Be creative
-    Create a Program that uses LED, Buzzer, timer and serial communication. Describe what your idea is and how you realized them.
-
+    Combine task 1.1 to 1.4. Be creative. Describe, imagine a useful application with Arduino. Be creative. Create a program that uses LED, Buzzer, timer and serial communication. Describe what is your idea and how do you realize it.
 
 2. Evaluation:
    
+
 
 ## 2 LED Matrix
 
@@ -115,7 +123,7 @@ Give a short overview about the IO of Arduino, what pins are and what kind of pi
 
 1. Task Definition:
     
-    Given the Hardware (Arduino + LED Matrix 16x8 LED) do a counter and a small application. Read the documentation of the module and apply.
+    Given the Hardware (Arduino + LED Matrix 16X8 LED or Display) implement a counter and a small application. Read the documentation of the module and apply. Explain how the matrix or display works and what is necessary to get started. Also describe witch parameters are important.
 
 2. Evaluation:
 
@@ -125,7 +133,7 @@ Give a short overview about the IO of Arduino, what pins are and what kind of pi
 
 1. Task Definition:
    
-    Count with the LED from 0 to 128. As Tipp use the function `matrix.drawPixel(X, Y, COLOR)`. How does this function work?
+    Count with the LED from 0 to 128. Does the number fit in the Matrix? What can you do to make the numbers fit If you are using the display does how to make the numbers beiger and readable?  As Tipp use the function `matrix.drawPixel(X, Y, COLOR)`. How does this function work? What are the parameters. How do you make the content fit better?
 
 2. Evaluation:
 
@@ -135,8 +143,9 @@ Give a short overview about the IO of Arduino, what pins are and what kind of pi
 ## 2.3 Third Task to be done
 
 1. Task Definition:
-    Draw easy Bitmap on the LED Matrix. As Tipp use the function “matrix.drawBitmap(0, 8, om_bmp, 8, 8, HT16K33_BLINK_CMD);”.
-    How does this function work? What else is nessesary?
+    
+    Draw easy Bitmap on the LED Matrix or Display. How does this function work? What else is necessary? How is the Bitmap be stored?
+    As Tipp use the function “matrix.drawBitmap(0, 8, om_bmp, 8, 8, HT16K33_BLINK_CMD);”
 
 2. Evaluation: 
 
@@ -146,8 +155,8 @@ Give a short overview about the IO of Arduino, what pins are and what kind of pi
 
 1. Task Definition:
 
-    Print some Text in the LED Matrix. As Tipp use “matrix.print("Hello");” and “matrix.setCursor(x,0);”.
-    How does this work?
+    Print some Text in the LED Matrix. How does this work? What options are available? How does the example behave with longer text? How does it work? What happens whit the memory? 
+    As Tipp use “matrix.print("Hello");” and “matrix.setCursor(x,0);”
 
 2. Evaluation: 
 
@@ -157,22 +166,27 @@ Give a short overview about the IO of Arduino, what pins are and what kind of pi
 
 1. Task Definition:
 
-    Document and explain all functions and how does the Board work.
+    Give a short overview and explain the most important functions and how does the Board work.
 
 2. Evaluation:
 
-TODO (?)
+
 
 ## 3 LED Matrix as Terminal Output
 
 1. Task Definition:
    
-    Combine the knowledge of the two previous Tasks and write a LED-Banner that plots the data that is send the Arduino via Terminal. 
-    Describe how your program works.
+    Combine the knowledge of the two previous Tasks and write a LED-Banner that plots the data that is send the Arduino via Terminal. The data should be typed in a serial console and be displayed on the arduino.
+    Describe how your program works and what is your concept. Do some sort of planning before you start programing.
 
-2. Evaluation: 
+2. Concept:
 
-We use `Serial.read()` to read from the Arduino terminal. The returned string is then printed onto the matrix.
+    First of all we have considered how we can get the data from the serial Interface and what happens if there is no data to read. The next thing was how we can print the read data onto the LED Matrix board. So we knew that we need to prepare the board every time we get new data from the serial interface. To read the data from the serial interface we will use the `Serial`-library. 
+
+3. Evaluation: 
+
+    To hack the serial Interface we used the Functions from the `Serial` library. First of all we checked if something is available on the Interface with the function `Serial.available()`. If the return value is greater than 0 then we start reading the data with the function `Serial.readString()` which will be return the data in form of a String.
+    After we read the String from the serial interface we prepare our LED matrix board for it. We set the text size to the minimal text size with the function `matrix.setTextSize(1)`, setup the text color with `matrix.setTextColor(LED_ON)`. In Addition we set the start pixel at 0, 0 with the function `matrix.setCursor(0, 0)` and rotate the text 90° with the function `matrix.setRotation(1)`, so that the text will show vertically on the board. The last thing we need to do is to clear the board with `matrix.clear()`. After the preparation we can write the read String with the function `matrix.print()`.
 
 
 ## 4 Wire layout for temperature measurement (Arduino)
@@ -192,11 +206,11 @@ You need the following:
 
 1. Task Definition: 
 
-    The digital thermometer uses a one-wire protocol for communication. Fortunately the Arduino IDE already provides an implementation for the protocol (one-wire library). For this exercise we will use the already existing library. 
+    The digital thermometer uses a one-wire protocol for communication. Fortunately the Arduino IDE already provides an implementation for the protocol (one-wire library). For this exercise we will use the already existing library. Just download it (http://playground.arduino.cc/Learning/OneWire) and integrated it into the Arduino IDE.
 
 2. Evaluation:
    
-TODO
+    First of all we include the downloaded `OneWire`-library. After them we can create an OneWire object for our *DS18B20 Temperature chip* with `OneWire ds(pin)`. In our loop function we setup a `byte addr[8]` and a `byte data[12]` variable. The next thing we need to do is to search the address of our Temperature chip which will be used to start the conversation with the chip. To get the adress we use the function `ds.search(addr)`. This function returns wheter True or False. If an adress was found it will be written into our variable `addr`. After them we reset our Pin, select our found address and start the conversation with `ds.write(0x44, 1)`. After them we can read the values with `ds.read()` into our variable `data`.
 
 ## 4.2 Temperature reading
 
@@ -206,14 +220,14 @@ TODO
 
 2. Evaluation:
 
-TODO
+    In Addition to 4.1 we need to convert the read data from the Temperature chip into a readable value for us. In our example from hex to String. The first thing we need to check is if the returned temperature is negative. If it is true we need to calculate a two's complement of the signed value. After them we need to mulitply by 6.25 or (100 * 0.0625), because our sensor has 0.0625 degree precision. After we got the result we seperate off the whole and the fractional portions. We do this because, when the value is shorter then 10 we need to print an extra 0 for the right value. Further more at the beginning of our convertion we saved us the sign bit. With this information we can check if it is negativ or positiv and can print a *-* at the beginning of our value or not.
 
 ## 4.3 LED scale
 
 1. Task Definition: 
     
-    Expand the circuit with 2 LED Matix and Print the Temperature.
+    Expand the circuit with LED Matix and Print the Temperature.
 
 2. Evaluation:
 
-TODO 
+    The last attempt with the temperature sensor follows the tasks 4.1 and 4.2. After converted the read hex temperature value into a String we can print them also onto our LED Matrix board. So we need to setup our board. We wrote a `for`-loop for our `matrix.setCursor(x, 0)` function. We use the `for`-loop to make our text glide across the board, because in case our text is to big we cut the end of the value. In this `for`-loop we setup the board. The function `matrix.setTextSize(1)` will set the font size to the minimal value. Then we forbid the text to run off right edge with the function `matrix.setTextWrap(false)`. Then we rotate the text with `matrix.setRotation(1)`, cleared the board with `matrix.clear()` and set the start pixel to 0,0 with the function `matrix.setCursor(0, 0)`. After them we can start to write the value on the board with the function `matrix.print(value)`. The printing on the board is the same principle like the printing on the Serial output. We check the sign bit and print a *-* if the value is minus and then we print the *whole* value. The next we do is to check if the *fractional* value is shorter than 10 and if it is true we print an extra 0 and the we print the *frational* value. So after this we got the temperature on our LED Matrix board.
