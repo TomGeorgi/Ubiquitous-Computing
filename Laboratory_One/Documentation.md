@@ -1,4 +1,5 @@
 # Laboratory 1: Arduino
+#### by Tom Georgi & Joshua Rutschmann
 
 ## 1 Basic working with Arduino IO, PWM and Serial
 
