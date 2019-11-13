@@ -6,7 +6,7 @@
     Give a short overview about the IO of Arduino, what pins are and what kind of pins are there and how to use them.
 
 - 
-    Pins A0 to A5 are **analog** inputs with a resolution of 10 bits. These pins are connected to an ADC (Analog-Digital-Converter) whose output is fed into the microcontroller itself. The value of the individual pins can be read using e.g. `analogRead(A0)`. This means you can read values between 0 and 1023 according to the voltage which is applied to said pins. You read 0 when 0V are applied to a pin and 1023 when 5V are supplied.
+    Pins A0 to A5 are **analog** inputs with a resolution of 10 bits. These pins are connected to an ADC (Analog-Digital-Converter) whose output is fed into the microcontroller itself. The value of the individual pins can be read using e.g. `analogRead(A0)`. This means you can read values between 0 and 1023 according toe the voltage which is applied to said pins. You read 0 when 0V are applied to a pin and 1023 when 5V are supplied.
 
 - 
     Pins 1 to 13 are **digital** In- and Outputs. Use `digitalRead(4)` when using the pin as an input and `digitalWrite(4)` when using it as an output. Pins 0 and 1 are intended to use for serial communication (0 -> **RX**, 1 -> **TX**). All other pins are regular but pins 3/5/6/9/10/11 are additonally capable of generating **PWM** signals.
@@ -17,16 +17,17 @@
 
     You have to remember to configure the pin mode using the function pinMode(pin, mode) e.g. `pinMode(A0, INPUT)`
 
-## 1.1 First Task to be done
 
+## 1.1 First Task to be done
 
     Make an LED Blink and Fade. What is the different between the two ways to realize it? Describe it
     in few words and give an example. You can use the tutorial as base. Don’t forget to explain the
     difference concepts and ideas behind Blink and Fade. Give also a short use case for each of this
     concepts.
 - 
-    If you want the LED to fade you need a PWM Signal which can be generated through the function `analogWrite(pin, value)`. The PWM duty cycle has a resolution of 8 bits (0 - 255).
-    If you want tom make a LED blink you simply need a ON (5V) or OFF (0V) which is a digital signal that can be activated through the function `digitalWrite(pin, value)`.
+    If you want the LED to fade you need a PWM Signal which can be generated through the function `analogWrite(pin, value)`. The PWM duty cycle has a resolution of 8 bits so you can set PWM values from 0 to 255.
+-
+    If you want to make a LED blink you simply need a ON (5V) or OFF (0V) which is a digital signal that can be activated through the function `digitalWrite(pin, value)`.
 
     The example below shows how the function `digitalWrite()` works for a LED which should glow for one second:
 
@@ -42,7 +43,7 @@
     ```
 
     We can see that the function is kept very simple.
-    The example below shows how we can set different values for an digital PWM Pin.
+    The example below shows how we can generate PWM signals with different percentages for a digital PWM Pin.
 
     ```arduino
     int led = 9; // Digital PWM Pin
@@ -157,9 +158,9 @@
     Give a short overview and explain the most important functions and how does the Board work.
 
 -
-    The most important functions are `pinMode(A0, INPUT)` which configures a pin either as an output or an input. The functions `analogRead(...)` and `digitalRead(...)` are very important for sensing things and `digitalWrite(...)` and `analogWrite(...)` are important for driving actuators.
+    The most important functions are `pinMode(...)` which configures a pin either as an output or an input. The functions `analogRead(...)` and `digitalRead(...)` are very important for sensing things and `digitalWrite(...)` and `analogWrite(...)` are important for driving actuators.
 
-    The board has a usb port which allows the microcontroller to be flashed  
+    Besides the important IO pins the board has an USB port which allows the microcontroller to be flashed using the Arduino IDE. There is also an ISP Header for flashing the Arduino with an **I**n **S**ystem **P**rogrammer. This allows the Arduino to be flashed even when the USB Port/Flasher is broken.
 
 ## 3 LED Matrix as Terminal Output
 
@@ -169,12 +170,12 @@
 
 1. Concept:
 
-    First of all we have considered how we can get the data from the serial Interface and what happens if there is no data to read. The next thing was how we can print the read data onto the LED Matrix board. So we knew that we need to prepare the board every time we get new data from the serial interface. To read the data from the serial interface we will use the `Serial`-library. 
+    First of all we have considered how we can get the data from the serial interface and what happens if there is no data to read. The next thing was how we can print the read data onto the LED Matrix board. So we knew that we need to prepare the board every time we get new data from the serial interface. To read the data from the serial interface we will use the `Serial`-library. 
 
 2. Evaluation: 
 
-    To hack the serial Interface we used the Functions from the `Serial` library. First of all we checked if something is available on the Interface with the function `Serial.available()`. If the return value is greater than 0 then we start reading the data with the function `Serial.readString()` which will be return the data in form of a String.
-    After we read the String from the serial interface we prepare our LED matrix board for it. We set the text size to the minimal text size with the function `matrix.setTextSize(1)`, setup the text color with `matrix.setTextColor(LED_ON)`. In Addition we set the start pixel at 0, 0 with the function `matrix.setCursor(0, 0)` and rotate the text 90° with the function `matrix.setRotation(1)`, so that the text will show vertically on the board. The last thing we need to do is to clear the board with `matrix.clear()`. After the preparation we can write the read String with the function `matrix.print()`.
+    To hack the serial interface we used the functions from the `Serial` library. First of all we checked if something is available on the interface with the function `Serial.available()`. If the return value is greater than 0 then we start reading the data with the function `Serial.readString()` which will be return the data in form of a String.
+    After we read the String from the serial interface we prepare our LED matrix board for it. We set the text size to the minimal text size with the function `matrix.setTextSize(1)`, setup the text color with `matrix.setTextColor(LED_ON)`. In addition we set the start pixel at 0, 0 with the function `matrix.setCursor(0, 0)` and rotate the text 90° with the function `matrix.setRotation(1)`, so that the text will show vertically on the board. The last thing we need to do is to clear the board with `matrix.clear()`. After the preparation we can write the read String with the function `matrix.print()`.
 
 
 ## 4 Wire layout for temperature measurement (Arduino)
@@ -202,11 +203,11 @@ You need the following:
     Using the Arduino implement get the data from sensor and plotted at the Serial console.
 
 -
-    In Addition to 4.1 we need to convert the read data from the Temperature chip into a readable value for us. In our example from hexadecimal representation to a String. The first thing we need to check is if the returned temperature is negative. If it is true we need to calculate a two's complement of the signed value. After them we need to mulitply by 6.25 or (100 * 0.0625), because our sensor has 0.0625 degree precision. After we got the result we seperate off the whole and the fractional portions. We do this because, when the value is shorter then 10 we need to print an extra 0 for the right value. Further more at the beginning of our convertion we saved us the sign bit. With this information we can check if it is negativ or positiv and can print a *-* at the beginning of our value or not.
+    In Addition to 4.1 we need to convert the read data from the Temperature chip into a readable value for us. In our example from hexadecimal representation into a String. The first thing we need to check is if the returned temperature is negative. If it is true we need to calculate a two's complement of the signed value. After them we need to mulitply by 6.25 or (100 * 0.0625), because our sensor has 0.0625 degree precision. After we got the result we seperate off the whole and the fractional portions. We do this because, when the value is shorter then 10 we need to print an extra 0 for the right value. Further more at the beginning of our convertion we saved us the sign bit. With this information we can check if it is negativ or positiv and can print a *-* at the beginning of our value or not.
 
 ## 4.3 LED scale
 
     Expand the circuit with LED Matix and Print the Temperature.
 
 -
-    The last attempt with the temperature sensor follows the tasks 4.1 and 4.2. After converted the read hex temperature value into a String we can print them also onto our LED Matrix board. So we need to setup our board. We wrote a `for`-loop for our `matrix.setCursor(x, 0)` function. We use the `for`-loop to make our text glide across the board, because in case our text is to big we cut the end of the value. In this `for`-loop we setup the board. The function `matrix.setTextSize(1)` will set the font size to the minimal value. Then we forbid the text to run off right edge with the function `matrix.setTextWrap(false)`. Then we rotate the text with `matrix.setRotation(1)`, cleared the board with `matrix.clear()` and set the start pixel to 0,0 with the function `matrix.setCursor(0, 0)`. After them we can start to write the value on the board with the function `matrix.print(value)`. The printing on the board is the same principle like the printing on the Serial output. We check the sign bit and print a *-* if the value is minus and then we print the *whole* value. The next we do is to check if the *fractional* value is shorter than 10 and if it is true we print an extra 0 and the we print the *frational* value. So after this we got the temperature on our LED Matrix board.
+    The last exercise with the temperature sensor follows the tasks 4.1 and 4.2. After converting the read hex temperature value into a String we can also print them onto our LED Matrix board. So we need to setup our board. We wrote a `for`-loop for our `matrix.setCursor(x, 0)` function. We use the `for`-loop to make our text glide across the board, because in case our text is to big we cut the end of the value. In this `for`-loop we setup the board. The function `matrix.setTextSize(1)` will set the font size to the minimal value. Then we forbid the text to run off right edge with the function `matrix.setTextWrap(false)`. Then we rotate the text with `matrix.setRotation(1)`, cleared the board with `matrix.clear()` and set the start pixel to 0,0 with the function `matrix.setCursor(0, 0)`. After them we can start to write the value on the board with the function `matrix.print(value)`. The printing on the board is the same principle like the printing on the Serial output. We check the sign bit and print a *-* if the value is minus and then we print the *whole* value. The next we do is to check if the *fractional* value is shorter than 10 and if it is true we print an extra 0 and the we print the *frational* value. So after this we got the temperature on our LED Matrix board.
