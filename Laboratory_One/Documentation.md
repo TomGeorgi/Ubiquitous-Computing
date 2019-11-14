@@ -89,7 +89,9 @@
 
     Read and understand what Serial communication is. What other kind of communication exist for Arduino? What are their advantages and disadvantages? Describe at least two additional communication possibilities additionally to Serial communication.
 
-- 
+-
+    The Serial Interface found on all Arduino boards. The advantage is that every computer can directly communicate with the arduino board, because they have a USB-to-Serial converter build in. The disadvantage of this interface is, its slow.
+-
     There are also I²C and SPI. Comparing to Serial I²C is synchronous (it has a clock pin) and so you do not have to agree on a baudrate. The disadvantage of I²C is its limited speed which ranges from 0,1 Mbit/s to 3,4 Mbit/s. The ultra fast mode reaches 5,0 Mbit/s but then it is only unidirectional. Another disadvantage is that I²C is like Serial only half-duplex.
     SPI on the other hand needs more cables but is full-duplex and you can also chain multiple SPI capable devices together.
         You need:
@@ -98,6 +100,7 @@
     - MISO (Master Input, Slave Output): Data output from **slave**
         Optionally (when chaining multiple devices):
     - SS (Slave Select): Selects the slave
+    
 
 
 ## 1.5 Fifth Task to be done
@@ -105,7 +108,7 @@
     Combine task 1.1 to 1.4. Be creative. Describe, imagine a useful application with Arduino. Be creative. Create a program that uses LED, Buzzer, timer and serial communication. Describe what is your idea and how do you realize it.
 
 -
-    Our program is a digital note controller. It should read the notes to play from the serial console. We realized it using `Serial.readLine()` which will receive a series of notes and delays. The song might look like: 
+    Our program is a digital note controller. It should read the notes to play from the serial console. We realized it using `Serial.readStringUntil('\n')` which will receive a series of notes and delays. The song might look like: 
 
     `<frequency>:<delay>|<frequency>:<delay>|...`
     ---
