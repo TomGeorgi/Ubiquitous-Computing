@@ -3,22 +3,27 @@
 
 ## 0. Exercise
 
-    Design a remote controlled system that drives the car. The main functionality is driving back and forwards, left and right. As remote operator you can use a PS4 Controller, a Web Interface or an App on a smartphone.
+    Design a remote controlled system that drives the car. 
+    The main functionality is driving back and forwards, left and right.
+    As remote operator you can use a PS4 Controller, a Web Interface or 
+    an App on a smartphone.
 
 
 ## 1. The Hardware
 
-The following schematic shows how the motors are connected to the Indel Edison Board. The H-Bridge is left out to simply the schematic.
+-
+    The following schematic shows how the motors are connected to the Indel Edison Board. The H-Bridge is left out to simply the schematic.
     
-![Wiring](schematic.png)
+    ![Wiring](schematic.png)
 
 ## 2. Design Concept
 
-
 -
-    The construction of our remote-controlled car consists of three connected components: Car hardware, control software and remote control. Using the control software written by us, the commands sent by the remote controller are captured and processed in form of events.
+    The construction of our remote-controlled car consists of three connected components: Car hardware, control software and remote control. The construction can also be seen in picture below. Using the control software written by us, the commands sent by the remote controller are captured and processed in form of events.
     After the events have been processed by the control software, the results should be sent to the hardware installed in the car.
     This makes it possible to control the car remotely.
+
+    ![Design Concept](Design_Concept.png)
 
 ## 3. Conntect to a PS4 Remote Controller
 
@@ -59,7 +64,11 @@ The following schematic shows how the motors are connected to the Indel Edison B
 
 ## 4. Program Design
 
-We have a main loop in which we first check for controller events, control the motors accordingly and then save the speed commands in memory (if the record mode is enabled).
+- 
+    ![Program Design](Program_Design.png)
+
+    We have a main loop in which we first check for controller events, control the motors accordingly and then save the speed commands in memory (if the record mode is enabled).
+
 
 
 ## 5. Autonomous car features
