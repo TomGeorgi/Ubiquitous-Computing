@@ -1,6 +1,19 @@
 # Laboratory 2: Edison autonomous car
 #### by Tom Georgi & Joshua Rutschmann
 
+## Table of Contents
+
+  - [0. Exercise](#0-exercise)
+  - [1. The Hardware](#1-the-hardware)
+  - [2. Design Concept](#2-design-concept)
+  - [3. Conntect to a PS4 Remote Controller](#3-conntect-to-a-ps4-remote-controller)
+  - [3.1. Advantages](#31-advantages)
+  - [3.2 Disadvantages](#32-disadvantages)
+  - [4. How does the Communication work](#4-how-does-the-communication-work)
+  - [5. Program Design](#5-program-design)
+  - [6. Autonomous car features](#6-autonomous-car-features)
+
+
 ## 0. Exercise
 
     Design a remote controlled system that drives the car. 
@@ -61,8 +74,12 @@
 
     As an example: If 'Ctrl-C' is pressed on the keyboard, an error called 'KeyboardInterrupt' is thrown in the programming language Python. This error can be caught and treated as a program abort. If you press a defined key on the PS4 controller, which should lead to the termination of the program, all previously received events are processed first. This can lead to accidents during long running tasks, which could damage the car. You could run the long-running tasks in a thread, but it would increase the complexity of the program. That's why we see this as a disadvantage.
 
+## 4. How does the Communication work
 
-## 4. Program Design
+-
+    To communicate with the PS4 controller in our program we use the Python package `evdev`. It contains a class `InputDevice` which is used by us to create an interface between our program and the PS4 controller. The class also contains a method `read()`. The method reads all incoming signals from the PS4 controller and converts them into events. These events can then be further processed in our program. If now an event comes from the controller like e.g. "right stick moved", then our car should drive forward or backward. For this we have to write a value to the corresponding pin. In order to be allowed to write values to a pin, we have to be able to access the hardware somehow. We do this by using the library `mraa`. This allows us to create and describe the pins contained on our board in form of variables in Python. Through these two libraries / packages we are able to create a connection between PS4 controller and auto hardware and let both communicate with each other.
+
+## 5. Program Design
 
 - 
     The picture below shows the Program Design.
@@ -76,7 +93,7 @@
 
     The class `Car` should be the heart of the program. It contains information about the current speed, the angle of the steering axle and also information about the current gear. In addition, there is also information about our autonomous feature, which will be described in more detail in the next chapter. To process incoming events of our 'Device' object (PS4 controller) the class `Car` contains a method `run()`. This method takes care of reading and processing events as well as error handling in case of an abort.
 
-## 5. Autonomous car features
+## 6. Autonomous car features
 
 -
     The developed autonomous feature is called `tracking`.
