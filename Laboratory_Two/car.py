@@ -9,6 +9,9 @@ from __future__ import print_function
 
 import mraa
 import sys
+import time
+import datetime
+from time import sleep
 from evdev import InputDevice, ecodes
 
 
@@ -107,7 +110,14 @@ class Car(Engine):
         self._controller = dev.controller
 
         self._gear = 0
+        self._raw_speed_value = 0
         self._speed_value = 0
+        self._old_speed_value = 0
+        self._steer_value = 0
+        self._old_steer_value = 0
+        self._record_mode = False
+        self._last_time = None
+        self._track = []
 
     def speed(self, value):
         """
@@ -131,6 +141,32 @@ class Car(Engine):
             self._drive_motor_pins[1].write(0)
             self._pin_drive_motor_pwm.write(0)
 
+    def speed_with_gear(self, value, gear):
+        """
+        """
+        min_and_max = Car._GEAR_SPEED[gear]
+        speed = None
+        if value < 0:
+            speed = value
+        else:
+            if min_and_max[0] <= value:
+                if value >= min_and_max[1]:
+                    speed = min_and_max[1]
+                else:
+                    speed = value
+            else:
+                speed = 0
+        
+        return speed
+            
+    def drive_circle(self):
+        self.steer(-1)
+        sleep(0.3)        
+        for i in range(0, 3):
+            self.steer(1)
+            self.speed(1)
+            sleep(3.2)
+            
     def steer(self, value):
         """
 
@@ -156,8 +192,35 @@ class Car(Engine):
     def run(self):
         """
         """
+        
         try:
-            for event in self._controller.read_loop():
+            while True:
+                self._read_events()
+                
+                self._speed_value = self.speed_with_gear(self._raw_speed_value, self._gear)
+
+                self.speed(self._speed_value)
+                self.steer(self._steer_value)
+                
+                if self._record_mode:
+                    if self._speed_value != self._old_speed_value or self._steer_value != self._old_steer_value:
+                        now = datetime.datetime.now()
+                        delta = now - self._last_time
+                        self._last_time = now
+                        passed_time = delta.seconds + (delta.microseconds / 1000.0 / 1000.0)
+                        self._track.append((self._steer_value, self._speed_value, passed_time))
+                        self._old_speed_value = self._speed_value
+                        self._old_steer_value = self._steer_value
+
+        except KeyboardInterrupt:
+            print("Car Stopped.")
+        finally:
+            self.speed(0)
+            self.steer(0)
+
+    def _read_events(self):
+        try:
+            for event in self._controller.read():
                 btn = event.code
                 value = event.value
 
@@ -171,32 +234,41 @@ class Car(Engine):
                         print("GEAR: ", str(self._gear))
                 elif btn == ecodes.ABS_X:  # ABS_X = PS4-Controller Left Stick
                     if value != 0:
-                        steer = - (value / 128.0) + 1.0
-                        self.steer(steer)
+                        self._steer_value = -1.0 * (value / 128.0) + 1.0
                 elif btn == ecodes.ABS_RZ:  # ABS_RZ = PS4-Controller Right Stick
                     if value != 0:
-                        self._speed_value = - (value / 128.0) + 1.0
-                        self.speed(self._speed_value)
+                        self._raw_speed_value = - (value / 128.0) + 1.0
                 elif btn == ecodes.BTN_B:  # BTN_B = PS4-Controller X
                     self.speed(0)
                     self.steer(0)
-                    return
-
-                min_and_max = Car._GEAR_SPEED[self._gear]
-                if self._speed_value < 0:
-                    self.speed(self._speed_value)
-                else:
-                    if min_and_max[0] <= self._speed_value:
-                        if self._speed_value >= min_and_max[1]:
-                            self.speed(min_and_max[1])
-                        else:
-                            self.speed(self._speed_value)
-                    else:
-                        self.speed(0)
-
-        except KeyboardInterrupt:
-            print("Car Stopped.")
-
+                    raise KeyboardInterrupt
+                elif btn == ecodes.BTN_Z:
+                    if event.value == 1:
+                        self.drive_circle()
+                elif btn == ecodes.BTN_X:
+                    if event.value == 1:
+                        self._record_mode = not self._record_mode
+                        if self._record_mode:
+                            self._track = []
+                            self._last_time = datetime.datetime.now()
+                        print("Record Mode:", self._record_mode)
+                elif btn == ecodes.BTN_A:
+                    if event.value == 1 and len(self._track) > 0:
+                        print("Replaying record.")
+                        for steer, speed, time in self._track:
+                            sleep(time)
+                            self.steer(steer)
+                            self.speed(speed)
+                elif btn == ecodes.BTN_C:
+                    if event.value == 1 and len(self._track) > 0:
+                        print("Replaying record in reverse.")
+                        for steer, speed, time in self._track[::-1]:
+                            sleep(time)
+                            self.steer(steer)
+                            self.speed(speed * -1)
+        except IOError:
+            return  
+                
 
 if __name__ == '__main__':
     """ Main """
