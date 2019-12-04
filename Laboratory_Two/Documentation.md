@@ -65,13 +65,19 @@
 ## 4. Program Design
 
 - 
+    The picture below shows the Program Design.
+
     ![Program Design](Program_Design.png)
 
-    We have a main loop in which we first check for controller events, control the motors accordingly and then save the speed commands in memory (if the record mode is enabled).
+    Our program is divided into three classes.
+    The class `Device` should provide the PS4 controller within the program. Furthermore, when starting the program, it should check whether the device can be connected to the car. 
 
+    The class `Engine` shall simulate the engine control of a real car. It contains the necessary pins to control the car. It also contains methods that can be used to start and stop the car.
 
+    The class `Car` should be the heart of the program. It contains information about the current speed, the angle of the steering axle and also information about the current gear. In addition, there is also information about our autonomous feature, which will be described in more detail in the next chapter. To process incoming events of our 'Device' object (PS4 controller) the class `Car` contains a method `run()`. This method takes care of reading and processing events as well as error handling in case of an abort.
 
 ## 5. Autonomous car features
 
-- The Recording Mode
-- Park sideways
+-
+    The developed autonomous feature is called `tracking`.
+    In the so-called `replay-mode` it records all values which are passed on to the motors (steering motor, speed motor). The `replay-mode` can be switched on and off at will. After the `replay-mode` has been terminated, the recording can be played forward or backward using the keys. If the `replay-mode` is activated, a new recording is started. Only the last recording will be stored. 
