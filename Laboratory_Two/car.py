@@ -73,9 +73,7 @@ class Engine:
         self.setup()
 
     def setup(self):
-        """
-        Setup the Pin Properties.
-        """
+        """ Setup the Pin Properties. """
         self._pin_drive_motor_pwm.enable(True)
         self._pin_steering_motor_pwm.enable(True)
 
@@ -90,6 +88,17 @@ class Engine:
         self._drive_motor_pins[1].write(0)
         self._steering_motor_pins[0].write(0)
         self._steering_motor_pins[1].write(0)
+
+    def tear_down(self):
+        """ Tear down the engine. """
+        self._drive_motor_pins[0].write(0)
+        self._drive_motor_pins[1].write(0)
+        self._steering_motor_pins[0].write(0)
+        self._steering_motor_pins[1].write(0)
+
+        self._pin_drive_motor_pwm.enable(False)
+        self._pin_steering_motor_pwm.enable(False)
+        self._pin_standby.write(0)
 
 
 class Car(Engine):
@@ -226,8 +235,7 @@ class Car(Engine):
         except KeyboardInterrupt:
             print("Car Stopped.")
         finally:
-            self.speed(0)
-            self.steer(0)
+            self.tear_down()
 
     def _read_events(self):
         """
