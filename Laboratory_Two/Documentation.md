@@ -27,7 +27,7 @@
     - it would also be so easy to use for e.g. children
     - the connection between car and PS4 controller is very simple and fast to make.
 
-## 2.1. Advantages / Disadvantages
+## 2.1. Advantages
 
 -
     The advantage of the PS4 controller is its ease of use. 
@@ -38,6 +38,15 @@
     Another advantage is the connection of controller and car. Once the devices are paired with each other, a Bluetooth connection is automatically established the next time both devices are started.
 
     In addition, there is the type of connection. While e.g. a keyboard or a web interface requires an intact network connection on the control device (host computer) as well as on the car (target computer) itself, the PS4 controller only requires an activated Bluetooth connection. The advantage is that the Bluetooth connection is less prone to errors and you can use the car regardless of the location.
+
+## 2.2 Disadvantages
+
+-
+    A disadvantage of the PS4 controller is the visualization. While you can transmit information to the user via the graphical interface of a web interface, a keyboard program or a smartphone app, this is completely omitted with the PS4 controller. For example, you don't notice if the car or the code has an error that could lead to an abort. With the other control types, errors are faster and easier to recognize, because you can log them and then output them to a graphical interface. 
+
+    Another disadvantage is the termination condition. While with the other remote controllers the catching of exceptions is mostly supported by the programming language and can be handled much easier. This is also possible with the PS4 controller, but much more difficult to realize.
+
+    As an example: If 'Ctrl-C' is pressed on the keyboard, an error called 'KeyboardInterrupt' is thrown in the programming language Python. This error can be caught and treated as a program abort. If you press a defined key on the PS4 controller, which should lead to the termination of the program, all previously received events are processed first. This can lead to accidents during long running tasks, which could damage the car. You could run the long-running tasks in a thread, but it would increase the complexity of the program. That's why we see this as a disadvantage.
 
 
 ## 3. Program Design
