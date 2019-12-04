@@ -1,5 +1,5 @@
 """
-Car Module contains the classes 'Device', 'Engine' and'Car'
+Car Module contains the classes 'Device', 'Engine' and 'Car'.
 More Information -> See Class Docs
 
 Authors:    Tom Georgi <Tom.Georgi@htwg-konstanz.de>
@@ -9,7 +9,7 @@ from __future__ import print_function
 
 import mraa
 import sys
-import time
+# import time
 import datetime
 from time import sleep
 from evdev import InputDevice, ecodes
@@ -61,7 +61,7 @@ class Engine:
 
     def __init__(self):
         """
-        Initialize the MRAA library pins
+        Initialize the MRAA library pins.
         """
         # Declare MRAA Lib Pins
         self._pin_drive_motor_pwm = mraa.Pwm(0)  # drive_motor_pwm pin
@@ -74,7 +74,7 @@ class Engine:
 
     def setup(self):
         """
-        Setup the Pin Properties
+        Setup the Pin Properties.
         """
         self._pin_drive_motor_pwm.enable(True)
         self._pin_steering_motor_pwm.enable(True)
@@ -94,16 +94,21 @@ class Engine:
 
 class Car(Engine):
     """
+    Class Car contains the controlling methods.
 
+    Inherits from:
+        Engine
     """
 
+    """GEAR_SPEED simulates minimum and maximum speed."""
     _GEAR_SPEED = [(0.0, 0.20), (0.20, 0.35), (0.35, 0.55), (0.55, 0.80), (0.80, 1.00)]
 
     def __init__(self, dev):
         """
+        Initialize the Car on start.
 
         Args:
-            dev:
+            dev: Remote Device
         """
         Engine.__init__(self)
         self._dev = dev
@@ -121,12 +126,10 @@ class Car(Engine):
 
     def speed(self, value):
         """
+        Write the given value to motor pins.
 
         Args:
-            value:
-
-        Returns:
-
+            value: speed [-1.0, 1.0] -> - value => backward, value => forward
         """
         if value < -0.1:
             self._drive_motor_pins[0].write(0)
@@ -141,11 +144,19 @@ class Car(Engine):
             self._drive_motor_pins[1].write(0)
             self._pin_drive_motor_pwm.write(0)
 
-    def speed_with_gear(self, value, gear):
+    @staticmethod
+    def speed_with_gear(value, gear):
         """
+        Check if the given value is in range of the gear values.
+
+        Args:
+            value: pwm speed [-1.0, 1.0]
+            gear: current gear [0, 4]
+
+        Returns:
+            available speed
         """
         min_and_max = Car._GEAR_SPEED[gear]
-        speed = None
         if value < 0:
             speed = value
         else:
@@ -160,6 +171,7 @@ class Car(Engine):
         return speed
             
     def drive_circle(self):
+        """ Drive a circle. """
         self.steer(-1)
         sleep(0.3)        
         for i in range(0, 3):
@@ -169,12 +181,10 @@ class Car(Engine):
             
     def steer(self, value):
         """
+        Write the given value to steer pins.
 
         Args:
-            value:
-
-        Returns:
-
+            value: speed [-1.0, 1.0]
         """
         if value < -0.1:
             self._steering_motor_pins[0].write(1)
@@ -191,6 +201,7 @@ class Car(Engine):
 
     def run(self):
         """
+        Method starts the car engine.
         """
         
         try:
@@ -219,6 +230,15 @@ class Car(Engine):
             self.steer(0)
 
     def _read_events(self):
+        """
+        method reads and processes the incoming events from the remote controller.
+
+        Returns:
+            None
+
+        Raises:
+            KeyboardInterrupt: Controller Button 'X' was pressed -> Stop the car.
+        """
         try:
             for event in self._controller.read():
                 btn = event.code
@@ -242,36 +262,38 @@ class Car(Engine):
                     self.speed(0)
                     self.steer(0)
                     raise KeyboardInterrupt
-                elif btn == ecodes.BTN_Z:
+                elif btn == ecodes.BTN_Z:  # BTN_Z = PS4-Controller R1
                     if event.value == 1:
                         self.drive_circle()
-                elif btn == ecodes.BTN_X:
+                elif btn == ecodes.BTN_X:  # BTN_X = PS4-Controller Triangle
                     if event.value == 1:
                         self._record_mode = not self._record_mode
                         if self._record_mode:
                             self._track = []
                             self._last_time = datetime.datetime.now()
                         print("Record Mode:", self._record_mode)
-                elif btn == ecodes.BTN_A:
+                elif btn == ecodes.BTN_A:   # BTN_A = PS4-Controller Square
                     if event.value == 1 and len(self._track) > 0:
                         print("Replaying record.")
-                        for steer, speed, time in self._track:
-                            sleep(time)
+                        for steer, speed, s_time in self._track:
+                            sleep(s_time)
                             self.steer(steer)
                             self.speed(speed)
-                elif btn == ecodes.BTN_C:
+                        print("FINISHED: Replaying record.")
+                elif btn == ecodes.BTN_C:  # BTN_C = PS4-Controller Circle
                     if event.value == 1 and len(self._track) > 0:
                         print("Replaying record in reverse.")
-                        for steer, speed, time in self._track[::-1]:
-                            sleep(time)
+                        for steer, speed, s_time in self._track[::-1]:
+                            sleep(s_time)
                             self.steer(steer)
                             self.speed(speed * -1)
+                        print("FINISHED: Replaying record in reverse.")
         except IOError:
             return  
                 
 
 if __name__ == '__main__':
-    """ Main """
+    """ Main. """
     controller = Device()
     car = Car(dev=controller)
     car.run()
