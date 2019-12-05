@@ -61,10 +61,11 @@
 ## 3.1. Advantages
 
 -
-    The advantage of the PS4 controller is its ease of use. 
+    The advantage of the PS4 controller is its ease of use and the existence of analog sticks (potentiometers).
     If you compare this e.g. with a keyboard, a PS4 controller has a manageable number of possibilities to control the car, while a keyboard has much more control possibilities. This can be an advantage if you have a lot of control commands, but in our case it is a disadvantage because it makes our program much more complex for the end user. 
+    The two sticks and the two triggers are not binary that means we can get analog values (0 - 256) for the movement between not pressed and fully pressed. This makes it way easier to control the speed or steering comparing to the keyboard.
     
-    As an example: If the user wants to drive forward, he simply presses the stick forward on the controller, while he could also enter the speed value via a number on the keyboard. This would give the user much more control options, but it would also make the program more error-prone. This is normally not the case with the PS4 controller. Here it is calculated depending on the position of the stick and the car is passed on. 
+    As an example: If the user wants to drive forward he simply presses the stick forward on the controller while he could also enter the speed value as a number on the keyboard. This would give the user much more control options, but it would also make the program more error-prone. This is normally not the case with the PS4 controller. With the controller the speed of the car is calculated depending on the position of the stick. 
     
     Another advantage is the connection of controller and car. Once the devices are paired with each other, a Bluetooth connection is automatically established the next time both devices are started.
 
@@ -73,7 +74,7 @@
 ## 3.2 Disadvantages
 
 -
-    A disadvantage of the PS4 controller is the feedback/output. While you can transmit information to the user via the graphical interface of a web interface, a keyboard program or a smartphone app, this is completely omitted with the PS4 controller. For example, you don't notice if the car or the code has an error that could lead to an abort. With the other control types, errors are faster and easier to recognize, because you can log them and then output them to a graphical interface. 
+    A disadvantage of the PS4 controller is the feedback/output. While you can transmit information to the user through the graphical interface of a web interface, a keyboard program or a smartphone app, this is completely omitted with the PS4 controller. For example, you don't notice if the car or the code has an error that could lead to an abort. With the other control methods errors are faster and easier to recognize, because you can log them and then output them to a graphical interface. 
 
     Another disadvantage is the termination condition. While with the other remote controllers the catching of exceptions is mostly supported by the programming language and can be handled much easier. This is also possible with the PS4 controller, but much more difficult to realize.
 
