@@ -25,14 +25,19 @@
 ## 1. The Hardware
 
 -
-    The following schematic shows how the motors are connected to the Indel Edison Board. The H-Bridge is left out to simply the schematic.
+    The following schematic shows how the motors are connected to the Indel Edison Board. The H bridge is left out to simplify the schematic. The red breakout board is the motor driver (TB6612FNG). It can power up to two DC motors with a constant current of 1,2 A (3,2 A peak). The two pins (IN1 and IN2) can be used to set the mode in which the motors will be driven: CW (clockwise), CCW (counterclockwise), Short-Brake and Stop. The two motor outputs (A and B) can be driven seperately and the speed of each motor is controlled by the PWM input signal with a maximum frequency of 100 kHz. The motor outputs (A and B) are connected to our H bridge. We pull up the STBY pin of the *TB6612FNG* to activate the motor driver.
     
     ![Wiring](schematic.png)
 
 ## 2. Design Concept
 
 -
-    The construction of our remote-controlled car consists of three connected components: Car hardware, control software and remote control. The construction can also be seen in picture below. Using the control software written by us, the commands sent by the remote controller are captured and processed in form of events.
+    The construction of our remote-controlled car consists of three connected components:
+    - Car hardware
+    - Control software
+    - Remote control
+    
+    The construction can also be seen in picture below. Using the control software written by us, the commands sent by the remote controller are captured and processed in form of events. The movement of the sticks should be mapped to 0 - 100 % PWM 
     After the events have been processed by the control software, the results should be sent to the hardware installed in the car.
     This makes it possible to control the car remotely.
 
@@ -68,7 +73,7 @@
 ## 3.2 Disadvantages
 
 -
-    A disadvantage of the PS4 controller is the visualization. While you can transmit information to the user via the graphical interface of a web interface, a keyboard program or a smartphone app, this is completely omitted with the PS4 controller. For example, you don't notice if the car or the code has an error that could lead to an abort. With the other control types, errors are faster and easier to recognize, because you can log them and then output them to a graphical interface. 
+    A disadvantage of the PS4 controller is the feedback/output. While you can transmit information to the user via the graphical interface of a web interface, a keyboard program or a smartphone app, this is completely omitted with the PS4 controller. For example, you don't notice if the car or the code has an error that could lead to an abort. With the other control types, errors are faster and easier to recognize, because you can log them and then output them to a graphical interface. 
 
     Another disadvantage is the termination condition. While with the other remote controllers the catching of exceptions is mostly supported by the programming language and can be handled much easier. This is also possible with the PS4 controller, but much more difficult to realize.
 
@@ -97,4 +102,9 @@
 
 -
     The developed autonomous feature is called `tracking`.
-    In the so-called `replay-mode` it records all values which are passed on to the motors (steering motor, speed motor). The `replay-mode` can be switched on and off at will. After the `replay-mode` has been terminated, the recording can be played forward or backward using the keys. If the `replay-mode` is activated, a new recording is started. Only the last recording will be stored. 
+    In the so-called `record-mode` it records all values which are passed on to the motors (steering motor, speed motor). The `record-mode` can be switched on and off at will. After the `record-mode` has been terminated, the recording can be played forward or backward using the following keys:
+    
+    - The ⬛-Key replays the recording
+    - The ◯-Key replays the recorded track in reverse
+    
+    If the `record-mode` is activated, a new recording is started. Only the last recording will be stored. 
