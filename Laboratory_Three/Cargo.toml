@@ -1,8 +1,9 @@
 [package]
 name = "Laboratory_Three"
 version = "0.1.0"
-authors = ["Tom Georgi <Tom.Georgi@htwg-konstanz.de>", "Joshua Rutschmann <Joshua.Rutschmann@htwg-konstanz.de>]
+authors = ["Tom Georgi <Tom.Georgi@htwg-konstanz.de>", "Joshua Rutschmann <Joshua.Rutschmann@htwg-konstanz.de>"]
 edition = "2018"
 
 [dependencies]
 philipshue = "0.3.2"
+sysinfo = "*"
