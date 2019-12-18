@@ -21,16 +21,15 @@ use cpu_monitor::CpuInstant;
 #[macro_use]
 extern crate text_io;
 
-use text_io::try_read;
-
 fn get_mem_usage() -> f64 {
+    std::thread::sleep(Duration::from_millis(100));
     let mem = mem_info().unwrap();
-    mem.free as f64 / mem.total as f64
+    (mem.total - mem.avail) as f64 / mem.total as f64
 }
 
 fn get_cpu_usage() -> Result<f64, io::Error> {
     let start = CpuInstant::now()?;
-    std::thread::sleep(Duration::from_millis(500));
+    std::thread::sleep(Duration::from_millis(100));
     let end = CpuInstant::now()?;
     let duration = end - start;
     Ok(duration.non_idle())
@@ -51,10 +50,11 @@ fn switch_light(bridge: &Bridge, on: bool) {
 
 fn main() -> Result<(), io::Error> {
     let ip = "141.37.168.50";
+    let config = "./syshue.cfg";
     let mut user = String::new();
 
-    if Path::new("./hue.cfg").exists() {
-        let mut file = File::open("./hue.cfg")?;
+    if Path::new(config).exists() {
+        let mut file = File::open(config)?;
         file.read_to_string(&mut user)?;
     }
 
@@ -64,7 +64,7 @@ fn main() -> Result<(), io::Error> {
                 Ok(username) => {
                     println!("User registered: {}, on IP: {}", username, ip);
                     user = username.clone();
-                    let mut file = File::create("./hue.cfg")?;
+                    let mut file = File::create(config)?;
                     file.write_all(username.as_bytes())?;
                     break;
                 }
@@ -119,10 +119,10 @@ fn main() -> Result<(), io::Error> {
                 get_mem_usage()
             };
 
-            let cmd = LightCommand::default();
-
             if usage * 100.0 >= thres {
                 switch_light(&bridge, true);
+
+                let cmd = LightCommand::default();
                 let cpu_cmd = cmd
                     .with_hue(21845 - (usage * 21845.0) as u16)
                     .with_sat(255)
@@ -153,14 +153,13 @@ fn main() -> Result<(), io::Error> {
         } else if let Ok(num) = thres_cmd {
             println!("[OK] Setting threshold to {}%", num);
             threshold.store(num, Ordering::SeqCst);
-        } else if t.contains("Mode: MEM") {
+        } else if t.contains("Mode: RAM") {
             println!("[OK] Tracking Memory now.");
             mode.store(1, Ordering::SeqCst);
         } else if t.contains("Mode: CPU") {
             println!("[OK] Tracking CPU usage now.");
             mode.store(0, Ordering::SeqCst);
         } else if t == "exit" {
-
             std::process::exit(0);
         } else {
             println!("[ERR] Unknown Command");
