@@ -102,7 +102,9 @@ Every color inside the white triangle can be emitted by our philips hue light bu
 
 - 
     We chose the language Rust as our language because it is fast and stable.
-    A big advantage is that we can easily include "libraries". In Rust they are called crates and these are the crates that we used:
+    A big advantage is that we can easily include "libraries". In Rust they are called crates.
+    
+    These are the crates that we used:
 
     - [philipshue](https://crates.io/crates/philipshue)
         - For controlling the hue bridge and lamp
@@ -115,27 +117,26 @@ Every color inside the white triangle can be emitted by our philips hue light bu
     - [sys-info](https://crates.io/crates/sys-info)
         - For retrieving memory usage
 
-
-    We take a time slice of 100 ms and measure the non-idle time of the machines processor. This makes the measurement more precise than only using one point in time. Also a period of 100ms still makes this application almost "realtime" capable. Before the CPU fans spin up the light bulb already indicates a rising CPU load.
+    To measure the percentage of free memory we simply divide the used memory by the total memory. For the CPU usage we take a time slice of 100 ms and measure the non-idle time of the machines processor. This makes the measurement more precise than only using one point in time. Also a period of 100ms still makes this application almost "realtime" capable. Before the CPU fans spin up the light bulb already indicates a rising CPU load.
 
     ![CPU Calculation](img/cpu.png)
 
 
     We store the username inside a file `syshue.cfg`. That means you have to remove the file to connect our program *syshue* to a different bridge.
     
-    After loading the username and connecting to the bridge we start monitoring the CPU load. The main application handles the user-input and one thread is spawned to measure the CPU or RAM usage and control the lights color accordingly. If you start the program you will get a shell like prompt:
+    After loading the username and connecting to the bridge we start monitoring the systems load. The main application handles the user-input and one thread is spawned to measure the CPU or RAM usage to control the lights color accordingly.
+    
+    If you start the program you will get a shell like prompt:
 
     ```
     Measuring Systems CPU...
     syshue>_
     ```
     
-    
-    You can specify the threshold level by sending `Threshold: 20%` to the program. It accepts integer percentages from 0% to 100%. Furthermore one can define the brightness of the lamp by executing `Brightness: 20` to the program. The valid range is between 0 and 255.
+    You can specify the threshold level by sending `Threshold: 20%` to the program. It accepts integer percentages from 0% to 100%. Furthermore one can define the brightness of the lamp by executing `Brightness: 20`. The valid range is between 0 and 255.
 
-    To switch between RAM and CPU mode simply type `Mode: CPU` which is the default or `Mode: RAM` which monitors the memory usage.
+    To switch between RAM and CPU mode simply type `Mode: CPU` which is the default or `Mode: RAM` which monitors the memory usage. Lastly you can type `exit` or press **Ctrl + C** to terminate our application.
     
-
     Here is a demo use of *syshue*:
 
     ```
